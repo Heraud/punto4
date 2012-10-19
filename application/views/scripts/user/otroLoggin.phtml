@@ -1,0 +1,60 @@
+<?php if(!$this->loggedIn){ ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login :: Zend Framework &raquo; Agenda web :: Iván Olivares R.</title>
+    <meta name="description" content="Agenda web desarrollada con ZendFramework y Bootstrap, from twitter.">
+    <meta name="author" content="Iván Olivares R.">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/logo.png">
+
+    
+    <!-- Stylesheets Login -->
+    <link href="/css/login.css" rel="stylesheet" type="text/css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/jquery-1.7.2.min"></script>
+    <!-- jQuery-UI -->
+    <script type="text/javascript" src="/jquery-ui-1.8.22.custom/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="/js/login.js"></script>
+  </head>
+
+    <body>
+        <center>
+        <div id="suspender_up"></div>
+            <div id="contenido">
+                <?php  ?>
+                <div class="login">
+                    <div class="form-title">
+                    </div>
+                    <div class="shield">
+                        <span class="form-box-top">&nbsp;</span>
+                        <div class="form-box-content">
+                            <div class="the-username the-username-focus">
+                                <img src="/img/user.png" align="absmiddle" />
+                            </div>
+                            <div class="the-password">
+                                <? echo $this->form_login; ?> 
+                            </div>
+                        </div>
+                        <span class="form-box-bottom">&nbsp;</span>                        
+                        <?php echo $this->responseLogin; ?>
+                    </div>
+
+                </div>
+            </div>
+    </center>            
+    </body>
+</html>
+<?php }else {
+	header("Location: /");
+}?>

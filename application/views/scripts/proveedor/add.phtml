@@ -1,0 +1,50 @@
+
+<h2 style="text-align:center;">Formulario</h2>	
+<div id="form_agregar" class="well">
+	    <a class="btn btn-success" href="/proveedor/list"><i class="icon-list icon-white"></i> Listar</a>
+	    <a class="btn" href="/proveedor/add"><i class="icon-refresh"></i> Actualizar</a>
+	    <br>
+	    <br>
+		<div class="alert alert-info" id="notices">
+		            Llene el formulario teniendo en cuenta los requeridos que están con (*).
+		</div>  	    
+		<?php echo $this->form;?>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$("#pro_docu").focusout(function(){
+
+			if($("#pro_docu").val().length>0){
+				$.post("/async/validproveedor",{pro_docu :$("#pro_docu").val() },function(response){
+						// alert(response);
+						if (response==3) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El docuemtno de identidad Nro. '"+$("#pro_docu").val()+"' No puede ser texto.");
+						}
+						if (response==1) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El docuemtno de identidad Nro. '"+$("#pro_docu").val()+"' que ingrsó ya se encuentra registrado.");
+						}
+						if(response == 0){	
+							$('input[type="submit"]').removeAttr('disabled');
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-success");						
+							$("#notices").html("<h4 class='alert-heading'>Bién</h4>El documento de identidad Nro. '"+$("#pro_docu").val()+"' está disponible. ;-)");
+						}
+					});
+			}else{
+				$('input[type="submit"]').attr('disabled','disabled');	
+				$("#notices").removeClass();
+				$("#notices").addClass("alert alert-error");	
+				$("#notices").html("<h4 class='alert-heading'>Error</h4>El campo de DOCUMENTO DE IDENTIDAD o RUC no pueden estár vacío.");
+			}
+			return false;
+		});
+	});
+
+</script>

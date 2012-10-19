@@ -1,0 +1,49 @@
+<h2 style="text-align:center;">Editar datos del cliente</h2>
+<div id="form_agregar" class="well">
+	<div class="" id="notices"></div> 
+    <a class="btn btn-success" href="/cliente/list"><i class="icon-arrow-left icon-white"></i> Listar</a>
+	<?php echo $this->form;?>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$("#fa_nro").focusout(function(){
+			var param = $("#fa_nro").val();
+			if(param.length>0){
+				$.post("/async/validarfacturaupdate",{fa_nro :param },function(response){
+						// alert(response);
+						if(response == 4){
+							$('input[type="submit"]').removeAttr('disabled');
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-success");						
+							$("#notices").html("<h4 class='alert-heading'>Bién</h4> el "+param+" es lo que está editando.");
+						}
+						if (response==3) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El  '"+param+"' No puede ser texto.");
+						}
+						if (response==1) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El  "+param+" que ingrsó ya se encuentra registrado.");
+						}
+						if(response == 0){	
+							$('input[type="submit"]').removeAttr('disabled');
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-success");						
+							$("#notices").html("<h4 class='alert-heading'>Bién</h4> el "+param+" está disponible.");
+						}
+					});
+			}else{
+				$('input[type="submit"]').attr('disabled','disabled');	
+				$("#notices").removeClass();
+				$("#notices").addClass("alert alert-error");	
+				$("#notices").html("<h4 class='alert-heading'>Error</h4>El campo Nro. Boleta es obligatorio.");
+			}
+			return false;
+		});
+	});
+</script>

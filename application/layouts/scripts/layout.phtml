@@ -1,0 +1,254 @@
+<?php 
+ function dameURL() {
+      $url = "http://" . $_SERVER['HTTP_HOST'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
+      return $url;
+  }
+
+  if ($this->loggedInAs()->us_user) {
+ ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sistema de Control de Punto4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+<!--link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script!-->
+
+
+        <!-- Le javascript================================================== -->
+
+    <!-- Placed at the end of the document so the pages load faster -->
+   <?php /* <script src="/bootstrap/js/jquery.js"></script>*/?>
+
+        <?php
+        echo $this->jQuery()
+                ->setVersion('1.7.1')
+                ->setUiVersion('1.8.18')
+                ->enable()
+                ->uiEnable();
+
+       $this->headLink()
+               ->prependStylesheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css');
+       echo $this->headLink();
+        ?> 
+
+    <script type="text/javascript" src="/jquery-ui-1.8.22.custom/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/jquery-ui-1.8.22.custom/js/jquery-ui-1.8.22.custom.min.js"></script>    
+    <link type="text/css" href="/jquery-ui-1.8.22.custom/css/custom-theme/jquery-ui-1.8.22.custom.css" rel="stylesheet" /> 
+
+<!--Par que la librería de datipicker sea en español !-->
+    <script type="text/javascript" src="/js/jquery.ui.datepicker-es.js"></script>
+
+    <!-- Le styles -->
+    <link href="/bootstrap/css/docs.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet"> 
+    <!-- Style custom -->
+    <link href="/css/style.custom.css" rel="stylesheet">    
+
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background:#ccc;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/img/logo.png">
+    <link rel="apple-touch-icon" href="/bootstrap/ico/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/ico/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/ico/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+
+    <!-- Topbar    ================================================== -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a style="font-size:15px; vertical-align: middle;" class="brand" href="/"><img style="vertical-align: middle;" src="/img/logo.png"> Punto Cuatro</a>
+          <div class="nav-collapse">
+            <ul class="nav pills">
+              <li><a href="#">Gastos extras</a></li>
+
+              <li class="dropdown" id="menu3">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#menu3">Compras<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Recepción de Mercadería</a></li>
+                </ul>
+              </li>   
+
+              <li class="dropdown" id="menu1">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">Administración<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <?php foreach ($this->Menu() as $value) :?>
+                      <li><a href="/<?php echo $value->li_link?>/list"><?php echo $value->li_nombre ?></a></li>
+                  <?php endforeach; ?>   
+                </ul>
+              </li>
+              <li><a href="<?php echo dameURL(); ?>"><i class="icon-refresh icon-white"></i> Actualizar</a></li>
+            </ul>
+
+            <p class="navbar-text pull-right">Sesión iniciado como <a href="#">@<?php echo $this->loggedInAs()->us_user; ?></a>&nbsp;&nbsp;<a href="/user/logout/"><span class="label label-important">Salir</span></a></p>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Masthead (blueprinty thing)   ================================================== -->
+<!--     <header class="jumbotron subhead">
+      <div class="inner">
+        <div class="container">
+          <h2>Melt's Tiendas</h2>
+        </div>
+      </div>
+    </header>
+<hr> -->
+    <div class="container-fluid">
+          <div id = "Contenido1" class="row-fluid">
+
+            <div class="span9"> 
+              <div id = "Contenido2" class="hero-unit">
+                <?php echo $this->layout()->content; ?>
+              </div>
+            </div><!--/span-->
+            <div class="span3">
+              <div class="well sidebar-nav">
+                <script>
+                  $(function() {
+                    $( "#accordion" ).accordion({
+                      collapsible: true,                       
+                      active: false, 
+                      alwaysOpen: false, 
+                      // animated: "bounceslide", 
+                      autoHeight: false                      
+                    });
+                  });
+                </script>
+                <div id="accordion">
+                  <h3><a href="#" >CLIENTE</a></h3>
+                  <div>
+                    <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
+                  </div>
+                  <h3><a href="#">CAJA</a></h3>
+                  <div>
+                    <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>s
+                  </div>
+                  <h3><a href="#">COMPRAS</a></h3>
+                  <div>
+                    <p>Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis. Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui. </p>
+                    <ul>
+                      <li>List item one</li>
+                      <li>List item two</li>
+                      <li>List item three</li>
+                    </ul>
+                  </div>
+                  <h3><a href="#">ALMACÉN</a></h3>
+                  <div>
+                    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                  </div>
+                  <h3><a href="#">BANCOS</a></h3>
+                  <div>
+                    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                  </div>
+                  <h3><a href="#">REPORTE</a></h3>
+                  <div>
+                    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                  </div>
+                  <h3><a href="#">TRABAJADORES</a></h3>
+                  <div>
+                    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                  </div>
+                  <h3><a href="#">SUCURSALES</a></h3>
+                  <div>
+                    <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                  </div>
+                  <h3><a href="#">ADMINISTRACIÓN</a></h3>
+                  <div>
+                          <ul class="nav nav-list">
+                            <?php foreach ($this->Menu() as $value) :?>
+                                <li><a href="/<?php echo $value->li_link?>/list"><?php echo $value->li_nombre ?></a></li>
+                            <?php endforeach; ?>   
+                          </ul>                    
+                  </div>
+                  
+                </div>
+                
+              </div><!--/.well -->
+
+              <div class="well sidebar-nav">
+                <img src="/img/slogan.png">          
+              </div><!--/.well -->
+            </div><!--/span-->            
+          </div><!--/row-->
+    
+          <!-- <footer class="footer"> -->
+          <footer>
+            <div class="well sidebar-nav">
+              <div class="container">                
+                  <p class="pull-right">
+                    <a href="http://twitter.github.com/bootstrap/" target="_blank">
+                      <img src="/img/PoweredBy_bootstrap.png" alt="">
+                    </a> &nbsp;&nbsp;             
+                    <a href="http://framework.zend.com/" target="_blank">
+                      <img src="/img/PoweredBy_ZF_4LightBG.png" alt="">
+                    </a>
+                  </p>
+                  <p>
+                    Developed by <a href="http://twitter.com/twitter" target="_blank">@twitter</a> <a href="http://twitter.com/heraudchalco" target="_blank">@heraudchalco</a> <a href="http://twitter.com/robertson" target="_blank">@robertson</a>.<br />
+                    Licensed under <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0.</a>.
+                  </p>
+                </div>        
+            </div><!--/.well -->
+          </footer>
+    </div><!--/.fluid-container-->   
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <!--script src="/bootstrap/js/jquery.js"></script!-->
+    <script src="/bootstrap/js/google-code-prettify/prettify.js"></script>
+    <script src="/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="/bootstrap/js/bootstrap-button.js"></script>
+    <script src="/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="/bootstrap/js/application.js"></script>
+
+  </body>
+</html>
+<? }else {
+
+        header("Location: /user/");
+} ?>

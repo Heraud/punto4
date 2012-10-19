@@ -1,0 +1,44 @@
+<h2 style="text-align:center;">Formulario</h2>
+<div id="form_agregar" class="well">
+	<div class="" id="notices">
+	            
+	</div> 
+    <a class="btn btn-success" href="/igv/list"><i class="icon-arrow-left icon-white"></i> Listar</a>
+	<?php echo $this->form;?>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$("#ig_tasa").focusout(function(){
+
+			if($("#ig_tasa").val().length>0){
+				$.post("/async/validarigv",{ig_tasa :$("#ig_tasa").val() },function(response){
+						// alert(response);
+						if (response==3) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El  '"+$("#ig_tasa").val()+"' No puede ser texto.");
+						}
+						if (response==1) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El  "+$("#ig_tasa").val()+" que ingrsó ya se encuentra registrado.");
+						}
+						if(response == 0){	
+							$('input[type="submit"]').removeAttr('disabled');
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-success");						
+							$("#notices").html("<h4 class='alert-heading'>Bién</h4> el "+$("#ig_tasa").val()+"% está disponible.");
+						}
+					});
+			}else{
+				$('input[type="submit"]').attr('disabled','disabled');	
+				$("#notices").removeClass();
+				$("#notices").addClass("alert alert-error");	
+				$("#notices").html("<h4 class='alert-heading'>Error</h4>El campo IGV es obligatorio.");
+			}
+			return false;
+		});
+	});
+</script>

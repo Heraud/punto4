@@ -1,0 +1,440 @@
+<div><a class="btn btn-primary" href="/compra/list"><i class="icon-list icon-white"></i> Lista</a></div>
+<br>
+<!-- PARA INGRESAR LOS DATOS DEL PROVEEDOR -->
+<div class="alert alert-info">
+	<div id="collapse0" class="collapse">
+		<form id="frmComprar" method="post">	
+			<dl class="zend_form" >
+				<label >Proveedor(*):</label>				
+					<select name="idproveedor" id="idproveedor">
+						<?php if(count($this->proveedor)): ?>
+						    <option value="0" label="Seleccionar proveedor">Seleccionar proveedor</option>
+							<?php foreach($this->proveedor as $key):?>
+						    <option value="<?php echo $key->idproveedor; ?>" label="<?php echo $key->pro_nombre; ?>"><?php echo $key->pro_nombre; ?></option>
+							<?php endforeach; ?>
+						<?php else: ?>
+							<option value="0" label="Proveedores no encontrados">Proveedores no encontrados</option>
+						<?php endif; ?>
+					</select>
+
+				<label>Nro. Factura/Guia(*):</label>				
+				<input type="text" name="co_nrofact" id="co_nrofact" placeholder="Ingrese Nro. factura/guia" class="input-large">
+				<label>Fecha(*):</label>
+				<input type="text" name="co_fech" id="co_fech" placeholder="yyyy/mm/dd" class="input-large">
+				<label>Encargado de la compra:</label>
+				<input type="text" name="co_encargado" id="co_encargado" placeholder="Ingrese el encargado" class="input-large">
+			</dl>
+		</form>
+	</div>
+	<div style="text-align:center;">
+		<button class="btn btn-mini btn-inverse" data-toggle="collapse" data-target="#collapse0">
+	    	<i class="icon-plus-sign icon-white"></i> Continuar</button> 		
+	</div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $("#co_fech").datepicker({ 
+        numberOfMonths:1,
+        showAnim: 'explode',//bounce,shake
+        dateFormat: 'yy/mm/dd',
+        constrainInput: true        													   
+    });
+    		   
+});	
+</script>
+</div>
+
+
+	<!-- BUSCAR E INGRESAR LOS ITEMS PARA AGREGAR A LAS LISTA -->
+
+<div class="well">
+    <div id="collapse1" class="collapse in">
+    <form id="frmbuscar">
+      <input id="txtbuscar" type="text" class="input-large search-query" placeholder="Buscar..." >
+      <button id="btnbuscar" type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i> Buscar</button>
+      &nbsp;&nbsp;
+      		<a class="btn btn-primary" href="#" id="listacompleta"><i class="icon-list icon-white"></i> Lista completa</a>
+     	<span></span>
+      	
+    </form>    	
+    	<div class="scrollspy-example" data-offset="0" data-target="#navbarExample" data-spy="scroll" style="height: auto 300px;">
+			<div id="tblistar">
+			    <table class="table table-striped table-bordered table-condensed" style="font-size:11px;">
+			            <thead>
+			               <tr>
+			                    <th>ID</th>
+					            <th>SKU</th>
+					            <th>Nombre del producto</th>
+					            <th>Marca</th>
+					            <th>Presentación</th>
+					            <th>P.Com</th>
+					            <th>P.Ven</th>            
+					            <th>Stock</th>
+					            <th>StockMin</th>
+					            <th>Acciones</th>
+			                </tr>
+			            </thead>        
+			            <?php if( count( $this->paginator )) :?>
+			            <tbody id="menu">
+			                <?php foreach ($this->paginator as $value) : ?>            
+			                <tr>
+			                    <td><?php echo $value->idrecurso;?></td>
+			                    <td><?php echo $value->re_sku;?></td>
+			                    <td><?php echo $value->re_nombre;?></td>
+			                    <td><?php echo $value->re_marca;?></td>
+			                    <td><?php echo $value->re_presenta;?></td>
+			                    <td><?php echo $value->re_pcompra;?></td>
+			                    <td><?php echo $value->re_pventa;?></td>
+			                    <td><?php echo $value->re_stock;?></td>                    
+			                    <td><?php echo $value->re_stockmin;?></td>
+			                    <td width="77">
+			                        <a class="btn btn-mini btn-success" href="/async/dialogcomprarrecurso/?id=<?php echo $value->idrecurso ?>"><i class="icon-shopping-cart icon-white"></i> Agregar</a>
+			                    </td>
+			                </tr>          
+			            <?php endforeach;?>
+			            </tbody>        
+			            <?php else : ?>
+			            <tbody>
+			                <tr>
+			                    <td colspan="10">No hay datos</td>
+			                </tr>
+			            </tbody>
+			            <?php endif;?> 
+			            <tfoot>
+			                <tr >
+			                    <td colspan="10">
+			                        <?php if( count( $this->paginator )):?>
+			                            <?php echo $this->paginator;?>
+			                        <?php endif;?>  
+			                    </td>
+			                </tr>      
+			            </tfoot>
+			    </table>
+			</div>
+          </div>
+    </div>		
+	<div style="text-align:center;">
+		<button  class="btn btn-mini btn-inverse" data-toggle="collapse" data-target="#collapse1">
+	    	<i class="icon-plus-sign icon-white"></i> Continuar</button> 		
+	</div>
+</div>
+
+	<!-- LISTAR ITEMS EN EL CARRITO-->
+<div class="well">
+	<div id="collapse2" class="collapse in">
+		<div id="carrito">
+	    <table class="table table-striped table-bordered table-condensed">
+	    <thead>
+	       <tr>
+	            <th>Id</th>
+	            <th>Nombre del recurso</th>
+	            <th>Cantidad</th>
+	            <th>Precio</th>
+	            <th>PTotal</th>
+	            <th>Acciones</th>
+	        </tr>
+	    </thead>        
+	    <?php if( count($this->carrito)) :?>
+	    <input type="hidden" id="oculto" value="<?php echo count($this->carrito); ?>">
+	    <?php $Total = 0 ?>
+	    <tbody id="menucarrito">
+	        <?php foreach ($this->carrito as $key => $value): ?> 
+	        <tr>
+	            <td><?php echo $value['id'];?></td>
+	            <td><?php echo $value['nombre'];?></td>
+	            <td><?php echo $value['cantidad'];?></td>
+	            <td><?php echo $value['precio'];?></td>
+	            <td><?php echo $value['ptotal'];?></td>
+	            <td>
+	                <a class="btn btn-mini btn-danger" href="/async/deleteitem/id/<?php echo $value['id'] ?>"><i class="icon-trash icon-white"></i> Eliminar</a>                     
+	            </td>
+	            <?php $Total= $Total+$value['ptotal']; ?>           
+	        </tr>          
+	    <?php endforeach;?>
+	    </tbody>        
+	    <?php else : ?>
+	    <tbody>
+	        <tr>
+	            <td colspan="6">No hay datos</td>
+	        </tr>
+	    </tbody>
+	    <?php endif;?> 
+	    <tfoot>
+	        <tr class="alert alert-success">
+	            <td colspan="4" style="">
+	            	<h4>Total de la compra(S/.)</h4>
+	            </td>
+	            <td>
+	            	<input type="hidden" id="ocultoTotal" value="<?php echo $Total; ?>">
+	            	<h4>
+	            	<?php if( count($this->carrito)) : echo number_format($Total, 2, ',', ''); ?>
+	            	<?php else: echo number_format(0, 2, ',', ' '); ?>	            		
+	            	<?php endif;?>
+	            	</h4>
+	            </td>
+	            <td></td>
+	        </tr>      
+	    </tfoot>
+	    </table> 
+	    </div>   		
+	</div>
+	<div style="text-align:center;">
+		<button  class="btn btn-mini btn-inverse" data-toggle="collapse" data-target="#collapse2">
+	    	<i class="icon-plus-sign icon-white"></i> Continuar
+	    </button>	
+	</div>	    	
+</div>
+<div style="text-align:center;">
+	<button type="submit"  class="btn btn-medium btn-primary" id="GuardarCompra">Guardar compra</button>
+	<button  class="btn btn-medium btn" id="CancelarCompra"> Cancelar compra</button> 		
+</div>
+<!-- FORMULARIO PARA AGREGAR A LA LISTA DE COMPRAS -->
+<div id="dialog-form" title="Agregar nuevo recurso">
+    <label class="validateTips">Todos los que contienen (*) son requeridos.</label>
+        <fieldset id="frmDialog">
+        </fieldset>
+</div>
+
+
+
+
+<style>
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { background:#fff;border-radius:2px;color: #000; padding: 0.3em; }
+</style>
+<script type="text/javascript">
+$(function(){
+
+	// Variables glovales para el tratamiento
+        $( "#dialog:ui-dialog" ).dialog( "destroy" ); 
+		tips = $( ".validateTips" );
+
+		function updateTips( t ) {
+            tips
+                .text( t )
+                .addClass( "ui-state-highlight" );
+            setTimeout(function() {
+                tips.removeClass( "ui-state-highlight", 1500 );
+            }, 500 );
+        }
+
+        function checkLength( o, n, min, max ) {
+            if ( o.val().length > max || o.val().length < min ) {
+                o.addClass( "ui-state-error" );
+                updateTips( "Longitud del " + "'"+n+"'" + " debe de estar entre " +
+                    min + " y " + max + " caracteres." );
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function checkRegexp( o, regexp, n ) {
+            if ( !( regexp.test( o.val() ) ) ) {
+                o.addClass( "ui-state-error" );
+                updateTips( n );
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+	// PARA REALIZAR LA BÚSQUEDA DE LOS RECURSOS PARA LUEGO SELECCIONARLOS Y COMPRARLOS
+  		 $("#frmbuscar").submit(function(){
+	        if($("#txtbuscar").val().length>0){
+	            $("#frmbuscar span").hide();
+	            $.post("/compra/search",{ txtbuscar:$("#txtbuscar").val() },function(response){
+	            	alert($("#txtbuscar").val());
+	            	return false;
+                    // $("#tblistar").html(response);
+                });            
+	        }else{
+	            $("#frmbuscar span").addClass("label label-warning");
+	            $("#frmbuscar span").text("Ingrese el prámetro!!").show();
+	            return false;
+	        }  
+            return false;
+        }); 
+
+
+	// PARA LISTAR TODO LOS REGISTROS DE LOS RECURSOS CON EL BOTON DE 'Lista completa'
+  		 $("#listacompleta").click(function(){
+  		 	$("#frmbuscar span").hide();         
+            $.post("/compra/listartodo",{},function(response){
+                $("#tblistar").html(response);
+            }); 
+            return false;           
+        }); 
+
+
+   		//Para agregar Items al carrito
+		$("#menu a").click(function(e){
+		    e.preventDefault();
+		    var pagina=$(this).attr("href");
+		    $.post(pagina,function(data){$("#frmDialog").html(data);});
+		  	$("#dialog-form").dialog("open");
+		  	return false;
+		});	
+
+		//Para elimimar Items del carrito
+    	$("#menucarrito a").click(function(e){
+    		e.preventDefault();
+    		var url = $(this).attr("href");
+    		$.post(url,function(data){$("#carrito").html(data);});
+    	});	 
+
+    	// Dialog form para el ingreso de los recursos al carrito
+		$( "#dialog-form" ).dialog({
+            autoOpen: false,
+            height: 380,
+            width: 540,
+            modal: true,
+            buttons: {
+            "Agregar a la lista": function() {
+            	var cantidad = $("#cantidad"), nombre = $("#nombre"),precio = $("#precio")
+				        	allFields = $( [] ).add( nombre ).add( cantidad ).add( precio );
+                        var bValid = true;
+			            allFields.removeClass( "ui-state-error" );			            
+			            bValid = bValid && checkLength( nombre, "nombre", 3, 50 );
+			            bValid = bValid && checkLength( cantidad, "cantidad", 1, 10 );
+			            bValid = bValid && checkLength( precio, "precio", 1, 10 );
+
+			            bValid = bValid && checkRegexp( cantidad, /^([0-9])+$/, "'cantidad' solo puede ser números:0-9" );
+			            bValid = bValid && checkRegexp( precio, /^[0-9]*(\.[0-9]+)?$/, "'precio' solo puede ser números:0-9 o decimales" );
+
+			           if ( bValid ) {
+			           		var idrecurso = $('#idrecurso').val();
+							var cantidad = $('#cantidad').val();
+							var precio = $('#precio').val();
+							var nombre = $('#nombre').val();						
+
+							$.post("/async/carrito",{ idrecurso:idrecurso, cantidad:cantidad,precio:precio, nombre:nombre},function(data){$("#carrito").html(data);})
+
+							$( this ).dialog( "close" );
+							$("#frmDialog").html('');
+							return false;
+			                                       
+			            }else{
+			                return false;
+			            }
+            },
+            Cancelar:function (){
+            	$(this).dialog("close");
+            }
+            },
+            close: function(e) {
+            	e.preventDefault();
+                allFields.val( "" ).removeClass( "ui-state-error");
+                
+            }
+        });
+
+	// Cancelar todo el proceso de compra
+		$("#CancelarCompra").click(function(){
+			if ($("#oculto").val()>0) {
+				if (confirm('Realmente quiere Cancelar la compra? Se perderá todo.')){
+	                $.post("/async/cancelarcompra",function(response){
+						$("#carrito").html(response);
+					});
+            	};
+			}else{
+				$("#dialog-message").html("<span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'>sssssssss</span><p>No hay elementos en la lista ;( </p>");
+				$( "#dialog-message" ).dialog({
+					modal: true,
+					buttons: {
+						Ok: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+			}
+            return false;
+		});
+
+
+	//Completar el proceso de compra 
+		$("#GuardarCompra").click(function(){
+			if ($("#idproveedor").val()==0) {
+				$("#dialog-message").html("<span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>Seleccione el Proveedor.");
+				$( "#dialog-message" ).dialog({
+					modal: true,
+					buttons: {
+						Ok: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});	
+				return false;
+			}
+
+			var co_nrofact = $("#co_nrofact"), co_fech = $("#co_fech"), co_encargado = $("#co_encargado"),
+				allFields = $([]).add(co_nrofact).add(co_fech).add(co_encargado);
+				allFields.removeClass("ui-state-error");
+			var bValid = true;
+			bValid = bValid && checkLength(co_nrofact,"Nro de factura",1,20);
+			bValid = bValid && checkLength(co_fech,"Fecha",10,10);
+			bValid = bValid && checkLength(co_encargado,"Encargado de la compra",0,50);
+
+			bValid = bValid && checkRegexp(co_nrofact,/^([0-9])+$/,"Nro factura solo contiene números");
+
+			if (bValid){
+				if ($("#oculto").val()>0){
+					$("#dialog-message").html("<span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span><p> Desea continuar con la compra??.</p>");
+					$( "#dialog-message" ).dialog({
+						resizable: false,
+						height:140,
+						modal: true,
+						buttons: {
+							Continuar: function() {
+								$.post("/async/guardarcompra",{
+										idproveedor:$("#idproveedor").val(),
+										co_nrofact:$("#co_nrofact").val(),
+										co_fech:$("#co_fech").val(),
+										co_importe:$("#ocultoTotal").val(),
+										co_encargado:$("#co_encargado").val()
+								},function(response){
+									if (response == 1) {
+										// window.location.href = 'your_url';//Para direccionamiento con historial de retorno
+										window.location.replace('/compra/list');
+									}else{
+										alert(response);
+								}
+
+								});								
+								$( this ).dialog( "close" );
+							},
+							Cancelar: function() {
+								$( this ).dialog( "close" );
+							}
+						}
+					});
+				}else{
+					$("#dialog-message").html("<span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span><p>Error. No hay elementos en la lista</p>");
+						$( "#dialog-message" ).dialog({
+						modal: true,
+						buttons: {
+							Ok: function() {
+								$( this ).dialog( "close" );
+							}
+						}
+					});					
+				}   		
+			}else{
+				$("#dialog-message").html("<span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span><p>Falta llenar campos en la parte de arriba.( </p>");
+				$( "#dialog-message" ).dialog({
+					modal: true,
+					buttons: {
+						Ok: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});					
+			}
+            return false;
+		});
+
+
+
+    });
+</script>
+<div id="dialog-message" title="Aviso"></div>

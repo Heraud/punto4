@@ -1,0 +1,47 @@
+
+<h2 style="text-align:center;">Formulario</h2>	
+<div id="form_agregar" class="well">
+	    <a class="btn btn-success" href="/recurso/list"><i class="icon-list icon-white"></i> Listar</a>
+	    <a class="btn" href="/recurso/add"><i class="icon-refresh"></i> Actualizar</a>
+	    <br>
+	    <br>
+		<div class="alert alert-info" id="notices">
+		            Llene el formulario teniendo en cuenta los requeridos que están con (*).
+		</div>  	    
+		<?php echo $this->form;?>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$(".description").addClass("label label-warning");
+		var ObjCss = {'font-size':'12px','padding-top':'0px','padding-bottom':'0px'}
+		$(".description").css(ObjCss);
+		
+		$("#re_nombre").focusout(function(){
+			if($("#re_nombre").val().length>0){
+				$.post("/async/verificarrecursonombre",{re_nombre :$("#re_nombre").val() },function(response){
+						 // alert(response);
+						if (response==1) {
+							$('input[type="submit"]').attr('disabled','disabled');	
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-error");	
+							$("#notices").html("<h4 class='alert-heading'>Error</h4>El nombre '"+$("#re_nombre").val()+"' ya se encuentra registrado.");
+						}
+						if(response == 0){	
+							$('input[type="submit"]').removeAttr('disabled');
+							$("#notices").removeClass();
+							$("#notices").addClass("alert alert-success");						
+							$("#notices").html("<h4 class='alert-heading'>Bien</h4>El nombre '"+$("#re_nombre").val()+"' está disponible.");
+						}
+					});
+			}else{
+				$('input[type="submit"]').attr('disabled','disabled');	
+				$("#notices").removeClass();
+				$("#notices").addClass("alert alert-error");	
+				$("#notices").html("<h4 class='alert-heading'>Error</h4>El campo 'NOMBRE DEL RECURSO' no pueden estár vacío.");
+			}
+			return false;
+		});
+	});
+
+</script>

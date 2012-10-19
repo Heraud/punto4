@@ -1,0 +1,82 @@
+
+<article>
+    <h2>Sección de Links</h2>
+    <div class="well">
+        <label style="float:right;">
+            <a class="btn" href="/link/list"><i class="icon-refresh"></i> Actualizar</a>&nbsp;            
+            <a class="btn btn-primary" href="/link/privileges"><i class="icon-lock icon-white"></i> Gestionar Privilegios</a>&nbsp;
+            <a class="btn btn-info" href="/link/add" id="create-new" title="Agregar Nuevo"><i class="icon-plus icon-white"></i> Nuevo </a>            
+        </label>
+    </div>
+</article>
+<article id="tblistar">
+    <table class="table table-striped table-bordered table-condensed">
+            <thead>
+               <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Link</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>        
+            <?php if( count( $this->paginator )) :?>
+            <tbody>
+                <?php foreach ($this->paginator as $value) : ?>         
+                <tr>
+                    <td><?php echo $value->idlink;?></td>
+                    <td><?php echo $value->li_nombre;?></td>
+                    <td><?php echo $value->li_link;?></td>
+                    <td><?php echo $value->lu_nombre;?></td>
+                    <td><?php echo $value->li_estado;?></td>
+                    <td width="77">                      
+                        <div class="btn-group">
+                          <a class="btn btn-mini btn-primary" href="#">Acción</a>
+                          <a class="btn btn-mini btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                          <ul class="dropdown-menu" style="text-align:left;">
+                            <li><a href="/link/update/id/<?php echo $value->idlink; ?>"><i class="icon-pencil"></i> Editar</a></li>
+                            <?php if ($value->li_estado == 'Suspendido'):?>
+                                <li><a href="/link/active/id/<?php echo $value->idlink; ?>"><i class="icon-trash"></i> Activar</a></li>   
+                            <?php else: ?>
+                                <li><a href="/link/suspend/id/<?php echo $value->idlink; ?>"><i class="icon-trash"></i> Suspender</a></li>   
+                            <?php endif ?>
+                            <li><a id="delete" href="/link/delete/id/<?php echo $value->idlink; ?>"><i class="icon-trash"></i> Eliminar</a></li>
+                          </ul>
+                        </div>                      
+                    </td>
+                </tr>          
+            <?php endforeach;?>
+            </tbody>        
+            <?php else : ?>
+            <tbody>
+                <tr>
+                    <td colspan="6">No hay datos</td>
+                </tr>
+            </tbody>
+            <?php endif;?> 
+            <tfoot >
+                <tr >
+                    <td colspan="6">
+                        <?php if( count( $this->paginator )):?>
+                            <?php echo $this->paginator;?>
+                        <?php endif;?>  
+                    </td>
+                </tr>      
+            </tfoot>
+    </table>
+</article>
+
+<script type="text/javascript">
+    $(function(){
+        $("#delete").click(function(e){
+            
+            if (confirm('Realmente quiere eliminarlo el registro??')){
+                return true;
+            }
+            else{
+                e.preventDefault();
+            }
+        });
+    });
+</script>

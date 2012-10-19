@@ -1,0 +1,23 @@
+<!-- La parte en donde se busca para listar la lista en la parte de abajo -->
+<script type="text/javascript">
+    $(function(){
+        // Script para buscar las compras
+        $("#frmbuscar").submit(function(){
+            $.post("/boleta/searchcompra",{txtbuscar : $("#txtbuscar").val()},function(response){
+                    var notice = response;
+                     $("#tblistar").html(notice);
+                });
+            return false;
+        });
+    });
+
+    function mostrar(data){  
+        $("#tblistar").html(data);
+    } 
+
+// VENTANA PARA DETALLAR
+    function abrirVentana(url) {
+        window.open(url,"nuevo","directories=no,location=no,menubar=no,scrollbars=yes,statusbar=no,tittlebar=no,width=800,height=600")
+    } 
+
+</script>

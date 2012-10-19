@@ -1,0 +1,71 @@
+<article>
+    <h2>Sección de Links</h2>
+    <div class="well">
+        <label style="float:right;">
+            <a class="btn" href="/usuario/list"><i class="icon-refresh"></i> Actualizar</a>&nbsp;            
+            <a class="btn btn-info" href="/usuario/add" id="create-new" title="Agregar Nuevo"><i class="icon-plus icon-white"></i> Nuevo </a>            
+        </label>
+    </div>
+</article>
+<article id="tblistar">
+    <table class="table table-striped table-bordered table-condensed">
+            <thead>
+               <tr>
+                    <th>Id</th>
+                    <th>Usuario</th>
+                    <th>Password</th>
+                    <th>Fech. Registro</th>
+                    <th>Privilegio</th>
+                    <th>Personal</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>        
+            <?php if( count( $this->paginator )) :?>
+            <tbody>
+                <?php foreach ($this->paginator as $value) : ?>         
+                <tr>
+                    <td><?php echo $value->idusuario;?></td>
+                    <td><?php echo $value->us_user;?></td>
+                    <td><?php echo $value->us_pass;?></td>
+                    <td><?php echo $value->us_fech;?></td>
+                    <td><?php echo $value->pri_nombre;?></td>
+                    <td><?php echo $value->per_nombre;?></td>
+                    <td><?php echo $value->us_estado;?></td>
+                    <td width="77">                      
+                        <div class="btn-group">
+                          <a class="btn btn-mini btn-primary" href="#">Acción</a>
+                          <a class="btn btn-mini btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                          <ul class="dropdown-menu" style="text-align:left;">
+                            <li><a href="/usuario/update/id/<?php echo $value->idusuario; ?>"><i class="icon-pencil"></i> Editar</a></li>
+                            <?php if ($value->us_estado == 'Suspendido'):?>
+                                <li><a href="/usuario/active/id/<?php echo $value->idusuario; ?>"><i class="icon-trash"></i> Activar</a></li>   
+                            <?php else: ?>
+                                <li><a href="/usuario/suspend/id/<?php echo $value->idusuario; ?>"><i class="icon-trash"></i> Suspender</a></li>   
+                            <?php endif ?>
+                            <li><a href="/usuario/delete/id/<?php echo $value->idusuario; ?>"><i class="icon-trash"></i> Eliminar</a></li>
+                          </ul>
+                        </div>                      
+                    </td>
+                </tr>          
+            <?php endforeach;?>
+            </tbody>        
+            <?php else : ?>
+            <tbody>
+                <tr>
+                    <td colspan="8">No hay datos</td>
+                </tr>
+            </tbody>
+            <?php endif;?> 
+            <tfoot >
+                <tr >
+                    <td colspan="8">
+                        <?php if( count( $this->paginator )):?>
+                            <?php echo $this->paginator;?>
+                        <?php endif;?>  
+                    </td>
+                </tr>      
+            </tfoot>
+    </table>
+</article>
+

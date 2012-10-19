@@ -1,0 +1,89 @@
+<article>
+    <h2>Sección de Personal</h2>
+    <form id="frmbuscar" class="well form-search">
+      <input id="txtbuscar" type="text" class="input-medium search-query" placeholder="Buscar..">
+      <button id="btnbuscar" type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i> Buscar</button>&nbsp;&nbsp;
+        <span></span>
+    <label style="float:right;">
+        <a class="btn" href="/personal/list"><i class="icon-refresh"></i> Actualizar</a>&nbsp;
+        <a class="btn btn-info" href="/personal/add" id="create-new" title="Agregar Nuevo"><i class="icon-plus icon-white"></i> Nuevo </a>
+    </label>
+    </form>
+</article>
+<article id="tblistar">
+    <table class="table table-striped table-bordered table-condensed" style="font-size:11px">
+            <thead>
+               <tr>
+                    <th>Id</th>
+                    <th>Documento</th>
+                    <th>Nombre y Apellidos</th>
+                    <th>Fecha de Registro</th>
+                    <th>E-Mail</th>
+                    <th>Teléfonos</th>
+                    <th>Dirección</th>
+                    <th>Sucursal</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>        
+            <?php if( count( $this->paginator )) :?>
+            <tbody>
+                <?php foreach ($this->paginator as $value) : ?>        
+                <tr>
+                    <td><?php echo $value->idpersonal;?></td>
+                    <td><?php echo $value->per_docu;?></td>
+                    <td><?php echo $value->per_nombre;?></td>
+                    <td><?php echo $value->per_fechregistro;?></td>
+                    <td><?php echo $value->per_email;?></td>
+                    <td><?php echo $value->per_telf;?></td>
+                    <td><?php echo $value->per_direc;?></td>
+                    <td><?php echo $value->su_nombre;?></td>
+                    <td><?php echo $value->per_estado;?></td>
+                    <td width="77">                      
+                        <div class="btn-group">
+                          <a class="btn btn-mini btn-primary" href="#">Acción</a>
+                          <a class="btn btn-mini btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                          <ul class="dropdown-menu" style="text-align:left;">
+                            <li><a href="/personal/update/id/<?php echo $value->idpersonal; ?>"><i class="icon-pencil"></i> Editar</a></li>
+                            <?php if ($value->per_estado == 'Suspendido'):?>
+                                <li><a href="/personal/active/id/<?php echo $value->idpersonal; ?>"><i class="icon-trash"></i> Activar</a></li>   
+                            <?php else: ?>
+                                <li><a href="/personal/suspend/id/<?php echo $value->idpersonal; ?>"><i class="icon-trash"></i> Suspender</a></li>   
+                            <?php endif ?>
+                            <li><a href="/personal/delete/id/<?php echo $value->idpersonal; ?>"><i class="icon-trash"></i> Eliminar</a></li>
+                          </ul>
+                        </div>                      
+                    </td>
+                </tr>          
+            <?php endforeach;?>
+            </tbody>        
+            <?php else : ?>
+            <tbody>
+                <tr>
+                    <td colspan="10">No hay datos</td>
+                </tr>
+            </tbody>
+            <?php endif;?> 
+            <tfoot>
+                <tr >
+                    <td colspan="10">
+                        <?php if( count( $this->paginator )):?>
+                            <?php echo $this->paginator;?>
+                        <?php endif;?>  
+                    </td>
+                </tr>      
+            </tfoot>
+    </table>
+</article>
+<!-- La parte en donde se busca para listar la lista en la parte de abajo -->
+<script type="text/javascript">
+    $(function(){
+        $("#frmbuscar").submit(function(){
+            $.post("/personal/search",{txtbuscar : $("#txtbuscar").val()},function(response){
+                    var notice = response;
+                    $("#tblistar").html(notice);
+                });
+            return false;
+        });
+    }); 
+</script>

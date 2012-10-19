@@ -1,0 +1,12 @@
+
+<h2 style="text-align:center;">Formulario de edición</h2>	
+<div id="form_agregar" class="well">
+	    <a class="btn btn-success" href="/personal/list"><i class="icon-list icon-white"></i> Listar</a>
+	    <a class="btn" href="/personal/update/id/<?php echo $this->id; ?>"><i class="icon-refresh"></i> Actualizar</a>
+	    <br>
+	    <br>
+		<div class="alert alert-info" id="notices">
+		            Requeridos(*).
+		</div>  	    
+		<?php echo $this->form;?>
+</div>

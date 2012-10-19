@@ -1,0 +1,51 @@
+<?php if(!$this->loggedIn){ ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login :: Punto4</title>
+    <meta name="description" content="Sistema de control para una empresa publicidadpunto4.">
+    <meta name="author" content="Iván Olivares R.">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/logo.png">
+
+    
+    <!-- Stylesheets Login -->
+    <link href="/css/login.css" rel="stylesheet" type="text/css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="/js/jquery-1.7.2.min"></script>
+    <!-- jQuery-UI -->
+    <script type="text/javascript" src="/jquery-ui-1.8.22.custom/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <!-- Scripts -->
+    <script type="text/javascript" src="/js/login.js"></script>
+  </head>
+
+    <body>
+        <center>
+            <div id="contenido">
+                <div class="login">
+                        <div class="form-box-content">
+                            <div class="the-username the-username-focus">
+                                <img src="/img/logo-oficial-punto4.gif" />
+                            </div>
+                            <div class="the-password">
+                                <? echo $this->form_login; ?> 
+                            </div>
+                        </div> 
+                        <?php echo $this->responseLogin; ?>
+                </div>
+            </div>
+    </center>            
+    </body>
+</html>
+<?php }else {
+	header("Location: /");
+}?>
